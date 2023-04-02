@@ -35,13 +35,18 @@ class Comment(Base):
    
 class Post(Base):
     __tablename__ = 'post'
-    # Here we define columns for the table comment.
-    # Notice that each column is also a normal Python instance attribute.
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('user.id'))
        
-    # Define the relationship to Post
-    user = relationship("Post", backref="comments")
+    user = relationship("User", backref="posts")
+
+class Followers(Base):
+    __tablename__ = 'followers'
+    user_from_id = Column(Integer, ForeignKey('user.id'), primary_key=True)
+    user_to_id = Column(Integer, ForeignKey('user.id'), primary_key=True) 
+   
+    user_from = relationship("User", foreign_keys=[user_from_id])
+    user_to = relationship("User", foreign_keys=[user_to_id])
 
     def to_dict(self):
         return {}
